@@ -41,17 +41,16 @@ const StudentDashboard = ({ navigation }) => {
 
 
              <TouchableOpacity 
-            onPress={() => navigation.navigate('ScanQR')}
+            onPress={() => navigation.navigate('QRCode')}
         >
             <LinearGradient 
                 colors={['#6B9BFA', '#0056FF']} 
                 style={styles.qrbutton}
             >
                 <Image source={require('../images/QR.png')} style={styles.QRcode}/>
-                <Text style={styles.scanqr}> Scan</Text>
+                <Text style={styles.scanqr}> View</Text>
                 <Text style={styles.scanqr}> Your QR </Text>
-                <Text style={styles.scanqr}> Code to </Text>
-                <Text style={styles.scanqr}> Enter</Text>
+                <Text style={styles.scanqr}> Code. </Text>
             </LinearGradient>
         </TouchableOpacity>
 
@@ -68,6 +67,8 @@ const StudentDashboard = ({ navigation }) => {
             <Text style={styles.linkparent}> Link with</Text>
             <Text style={styles.linkparent}> Parents</Text>
 
+            <View style={styles.line}/>
+
             <TouchableOpacity
                 style={styles.widgetbutton2} 
                 onPress={() => navigation.navigate('ActivityLogs')}
@@ -77,13 +78,6 @@ const StudentDashboard = ({ navigation }) => {
             <Image source={require('../images/arrowleft.png')} style={styles.arrowleft} />
             <Text style={styles.logs}>Activity</Text>
             <Text style={styles.logs}>Logs</Text>
-
-            <TouchableOpacity 
-                style={styles.viewqr}
-                onPress={()=> navigation.navigate('QRCode')}>
-                    <Text style={styles.viewqrcode}> View QR Code</Text>
-
-            </TouchableOpacity>
             </View>
 
             {/* Content */}
@@ -132,7 +126,13 @@ const styles = StyleSheet.create({
         // Shadow for Android
         elevation: 6, // Elevation level for Android
     },
-    
+    line:{
+        width: '90%',
+        height: 3,
+        alignSelf: 'center',
+        backgroundColor: '#6B9BFA',
+        top: '-22%',
+    },
     viewqrcode: {
         fontFamily: 'Kanit',
         fontSize: 20,
@@ -155,10 +155,10 @@ const styles = StyleSheet.create({
         elevation: 5, // Shadow for Android
     },
     widgetbutton: {
-        width: 100,
-        height: 80,
+        width: 110,
+        height: 90,
         backgroundColor: '#FFF',
-        top: '7%',
+        top: '9%',
         left: '7%',
         borderRadius: 21,
         shadowColor: 'black', // Shadow color (iOS)
@@ -168,10 +168,10 @@ const styles = StyleSheet.create({
         elevation: 5, // Shadow for Android
     },
     widgetbutton2: {
-        width: 102,
-        height: 86,
+        width: 110,
+        height: 90,
         backgroundColor: '#FFF',
-        top: '-30%',
+        top: '-10%',
         right: '-63%',
         borderRadius: 21,
         shadowColor: 'black', // Shadow color (iOS)
@@ -181,15 +181,15 @@ const styles = StyleSheet.create({
         elevation: 5, // Shadow for Android
     },
     parent:{
-        width: 54,
-        height: 36.68,
+        width: 60,
+        height: 40,
         right: '-15%',
         top: '30%',
     },
     logicon:{
-        width: 58.42,
-        height: 55.71,
-        right: '-15%',
+        width: 65,
+        height: 63,
+        right: '-20%',
         top: '15%',
     },
     relationship:{
@@ -208,7 +208,7 @@ const styles = StyleSheet.create({
         width: 87.5,
         height: 82.49,
         right: '-35%',
-        top: '-55%',
+        top: '-35%',
     },
     linkparent:{
         color: '#2488E5',
@@ -228,7 +228,7 @@ const styles = StyleSheet.create({
         fontFamily: 'Kanit',
         fontWeight: '900',
         right: '-7%',
-        top: '-78%',
+        top: '-58%',
     },
     qrbutton:{
         width: '90%',
@@ -249,12 +249,12 @@ const styles = StyleSheet.create({
         top: '-30%',
     },
     scanqr:{
-        fontSize: 20,
+        fontSize: 25,
         fontFamily: 'Martian Mono',
         color: '#fff',
         fontWeight: 'bold',
         top: '-100%',
-        left: '10%',
+        left: '8%',
     },
     logo: {
         width: 35, // Adjust logo size
