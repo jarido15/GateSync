@@ -15,6 +15,7 @@ import StudentPage from './components/StudentPage';
 import MessagesScreen from './components/MessagesScreen';
 import UpdatesScreen from './components/UpdateScreen';
 import QRCode from './components/QRCode';
+import ActivityLogs from './components/ActivityLogs';
 import { Image, View } from 'react-native';
 
 const Stack = createStackNavigator();
@@ -123,6 +124,11 @@ const App = () => {
          <Stack.Screen
           name="QRCode"
           component={QRCode}
+          options={{ headerShown: false }}
+        />
+         <Stack.Screen
+          name="ActivityLogs"
+          component={ActivityLogs}
           options={{ headerShown: false }}
         />
         {/* StudentPage with bottom tabs */}
