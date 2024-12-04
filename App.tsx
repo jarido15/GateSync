@@ -16,6 +16,8 @@ import MessagesScreen from './components/MessagesScreen';
 import UpdatesScreen from './components/UpdateScreen';
 import QRCode from './components/QRCode';
 import ActivityLogs from './components/ActivityLogs';
+import LinkParent from './components/LinkParent';
+import LinkedParent from './components/LinkedParent';
 import { Image, View } from 'react-native';
 
 const Stack = createStackNavigator();
@@ -129,6 +131,16 @@ const App = () => {
          <Stack.Screen
           name="ActivityLogs"
           component={ActivityLogs}
+          options={{ headerShown: false }}
+        />
+         <Stack.Screen
+          name="LinkParent"
+          component={LinkParent}
+          options={{ headerShown: false }}
+        />
+         <Stack.Screen
+          name="LinkedParent"
+          component={LinkedParent}
           options={{ headerShown: false }}
         />
         {/* StudentPage with bottom tabs */}

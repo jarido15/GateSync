@@ -54,10 +54,10 @@ const MessageScreen = ({ navigation }) => {
           </TouchableOpacity>
         </View>
 
-
+      <View style={styles.messagecontainer}/>
 
         <View style={styles.content}>
-          <Text style={styles.welcomeText}>Link Account</Text>
+          <Text style={styles.welcomeText}>Messages</Text>
         </View>
       </ScrollView>
 
@@ -86,8 +86,8 @@ const MessageScreen = ({ navigation }) => {
               <TouchableOpacity onPress={() => navigateToPage('ActivityLogs')} style={styles.menuOption}>
                 <Text style={styles.menuOptionText}>Activity Logs</Text>
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => navigateToPage('LinkParent')} style={styles.menuOption}>
-                <Text style={styles.menuOptionText}>Link Parent</Text>
+              <TouchableOpacity onPress={() => navigateToPage('LinkedParent')} style={styles.menuOption}>
+                <Text style={styles.menuOptionText}>Linked Parent</Text>
               </TouchableOpacity>
               <TouchableOpacity onPress={() => console.log('Settings Pressed')} style={styles.menuOption}>
                 <Text style={styles.menuOptionText}>Settings</Text>
@@ -123,6 +123,14 @@ const styles = StyleSheet.create({
     navCenter: {
         flexDirection: 'row',
         alignItems: 'center',
+    },
+    messagecontainer: {
+      backgroundColor: '#CFE5FF',
+      width: '90%',
+      height: '90%',
+      alignSelf: 'center',
+      top: '40%',
+      borderRadius: 21,
     },
     logo: {
         width: 35, // Adjust logo size
@@ -171,7 +179,7 @@ const styles = StyleSheet.create({
         fontWeight: '800',
         fontFamily: 'Kanit',
         color: '#5394F2',
-        top: -30,
+        top: -175,
     },
     modalContainer: {
         flex: 1,

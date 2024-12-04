@@ -125,8 +125,8 @@ const StudentDashboard = ({ navigation }) => {
               <TouchableOpacity onPress={() => navigateToPage('ActivityLogs')} style={styles.menuOption}>
                 <Text style={styles.menuOptionText}>Activity Logs</Text>
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => navigateToPage('LinkParent')} style={styles.menuOption}>
-                <Text style={styles.menuOptionText}>Link Parent</Text>
+              <TouchableOpacity onPress={() => navigateToPage('LinkedParent')} style={styles.menuOption}>
+                <Text style={styles.menuOptionText}>Linked Parent</Text>
               </TouchableOpacity>
               <TouchableOpacity onPress={() => console.log('Settings Pressed')} style={styles.menuOption}>
                 <Text style={styles.menuOptionText}>Settings</Text>
