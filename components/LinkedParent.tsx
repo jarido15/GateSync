@@ -163,7 +163,7 @@ const styles = StyleSheet.create({
     right: 15,
   },
   addicon: {
-    width: 34,
+    width: 33,
     height: 33,
     top: -45,
     right: 10,

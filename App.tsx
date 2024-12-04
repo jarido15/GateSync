@@ -18,6 +18,7 @@ import QRCode from './components/QRCode';
 import ActivityLogs from './components/ActivityLogs';
 import LinkParent from './components/LinkParent';
 import LinkedParent from './components/LinkedParent';
+import ChatPage from './components/ChatPage';
 import { Image, View } from 'react-native';
 
 const Stack = createStackNavigator();
@@ -141,6 +142,11 @@ const App = () => {
          <Stack.Screen
           name="LinkedParent"
           component={LinkedParent}
+          options={{ headerShown: false }}
+        />
+          <Stack.Screen
+          name="ChatPage"
+          component={ChatPage}
           options={{ headerShown: false }}
         />
         {/* StudentPage with bottom tabs */}
