@@ -90,6 +90,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         color: '#fff',  // Button text color
         textAlign: 'center', // Center align the text inside the button
+        fontFamily: 'Kanit-SemiBold',
     },
 });
 

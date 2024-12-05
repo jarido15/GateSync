@@ -51,6 +51,7 @@ const ParentLogin = ({ navigation }) => {
                     placeholder="Enter ID Number"
                     value={username}
                     onChangeText={setUsername}
+                    placeholderTextColor={'#686D76'}
                 />
                 <Text style={styles.ID}>Student ID</Text>
                 <Text style={styles.password}>Password</Text>
@@ -61,6 +62,7 @@ const ParentLogin = ({ navigation }) => {
                     secureTextEntry
                     value={password}
                     onChangeText={setPassword}
+                    placeholderTextColor={'#686D76'}
                 />
             </View>
 

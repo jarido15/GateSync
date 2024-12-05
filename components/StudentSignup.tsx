@@ -71,6 +71,7 @@ const StudentSignup = ({ navigation }) => {
                     placeholder="Enter Username"
                     value={username}
                     onChangeText={setUsername}
+                    placeholderTextColor={'#686D76'}
                 />
 
                 <Text style={styles.label}>Email</Text>
@@ -80,6 +81,7 @@ const StudentSignup = ({ navigation }) => {
                     value={email}
                     onChangeText={setEmail}
                     keyboardType="email-address"
+                    placeholderTextColor={'#686D76'}
                 />
 
                 <Text style={styles.label}>ID Number</Text>
@@ -88,6 +90,7 @@ const StudentSignup = ({ navigation }) => {
                     placeholder="Enter ID Number"
                     value={idNumber}
                     onChangeText={setIdNumber}
+                    placeholderTextColor={'#686D76'}
                 />
 
                 <Text style={styles.label}>Password</Text>
@@ -97,6 +100,7 @@ const StudentSignup = ({ navigation }) => {
                     secureTextEntry
                     value={password}
                     onChangeText={setPassword}
+                    placeholderTextColor={'#686D76'}
                 />
             </View>
 

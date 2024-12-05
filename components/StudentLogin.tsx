@@ -63,6 +63,7 @@ const StudentLogin = ({ navigation }) => {
                     placeholder="Enter ID Number"
                     value={idNumber}
                     onChangeText={setidNumber}
+                    placeholderTextColor={'#686D76'}
                 />
                 <Text style={styles.ID}>ID Number</Text>
                 <Text style={styles.password}>Password</Text>
@@ -73,6 +74,7 @@ const StudentLogin = ({ navigation }) => {
                     secureTextEntry
                     value={password}
                     onChangeText={setPassword}
+                    placeholderTextColor={'#686D76'}
                 />
             </View>
 
@@ -104,9 +106,10 @@ const styles = StyleSheet.create({
     },
     heading: {
         fontSize: 48,
-        fontWeight: '500',
+        fontWeight: '800',
         bottom: 560,
         color: '#fff',
+        fontFamily: 'Kanit-SemiBold',
         textShadowColor: '#000', // Shadow color (black in this case)
         textShadowOffset: { width: 1, height: 2 }, // Offset of the shadow (you can adjust these values)
         textShadowRadius: 8, // Blur radius (higher values make the shadow more diffuse)

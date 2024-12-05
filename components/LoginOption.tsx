@@ -54,6 +54,7 @@ const styles = StyleSheet.create({
         fontWeight: '500',
         top: -610,
         color: '#fff',
+        fontFamily: 'Kanit-SemiBold',
         textShadowColor: '#000', // Shadow color (black in this case)
         textShadowOffset: { width: 2, height: 2 }, // Offset of the shadow (you can adjust these values)
         textShadowRadius: 8, // Blur radius (higher values make the shadow more diffuse)
@@ -89,7 +90,7 @@ const styles = StyleSheet.create({
         height: 68,
         top: -550,
         left: 5,
-        alignContent:'center'
+        alignContent:'center',
 
     },
     buttonStudent:{
@@ -97,6 +98,7 @@ const styles = StyleSheet.create({
         fontSize: 20,
         color: '#12314D',
         alignSelf: 'center',
+        fontFamily: 'Kanit-SemiBold',
         top: 5,
     },
     buttonParent:{
@@ -105,12 +107,14 @@ const styles = StyleSheet.create({
         color: '#12314D',
         alignSelf: 'center',
         top: 5,
+        fontFamily: 'Kanit-SemiBold',
     },
     as: {
         fontSize: 32,
         fontWeight: '500',
         top: -610,
         color: '#fff',
+        fontFamily: 'Kanit-SemiBold',
         textShadowColor: '#000', // Shadow color (black in this case)
         textShadowOffset: { width: 2, height: 2 }, // Offset of the shadow (you can adjust these values)
         textShadowRadius: 8, // Blur radius (higher values make the shadow more diffuse)

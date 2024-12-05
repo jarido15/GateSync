@@ -54,6 +54,7 @@ const ParentSignup = ({ navigation }) => {
                     placeholder="Enter Username"
                     value={username}
                     onChangeText={setUsername}
+                    placeholderTextColor={'#686D76'}
                 />
 
                 <Text style={styles.label}>Email</Text>
@@ -63,6 +64,7 @@ const ParentSignup = ({ navigation }) => {
                     value={email}
                     onChangeText={setEmail}
                     keyboardType="email-address"
+                    placeholderTextColor={'#686D76'}
                 />
 
                 <Text style={styles.label}>Stundent ID</Text>
@@ -71,6 +73,7 @@ const ParentSignup = ({ navigation }) => {
                     placeholder="Enter ID Number"
                     value={idNumber}
                     onChangeText={setIdNumber}
+                    placeholderTextColor={'#686D76'}
                 />
 
                 <Text style={styles.label}>Password</Text>
@@ -80,6 +83,7 @@ const ParentSignup = ({ navigation }) => {
                     secureTextEntry
                     value={password}
                     onChangeText={setPassword}
+                    placeholderTextColor={'#686D76'}
                 />
             </View>
 
