@@ -1,11 +1,22 @@
+/* eslint-disable no-trailing-spaces */
 import React, { useRef, useState } from 'react';
 import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity, Modal, Animated } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
 const StudentDashboard = ({ navigation }) => {
     const [menuVisible, setMenuVisible] = useState(false); // State to control menu modal visibility
+    const [profileDropdownVisible, setProfileDropdownVisible] = useState(false); // State for profile dropdown visibility
     const slideAnim = useRef(new Animated.Value(-400)).current; // Initial position of the modal (off-screen to the left)
-  
+    const [modalVisible, setModalVisible] = useState(false);
+    const [selectedReasons, setSelectedReasons] = useState<{ [key: string]: boolean }>({
+      'Medical Emergency': false,
+      'Family Emergency': false,
+      'Natural Disaster': false,
+      'Personal Safety Concern': false,
+      'Other': false,
+    });
+
+
     const openMenu = () => {
       setMenuVisible(true); // Show the modal
       Animated.timing(slideAnim, {
@@ -23,10 +34,33 @@ const StudentDashboard = ({ navigation }) => {
       }).start(() => setMenuVisible(false)); // Hide modal after animation
     };
   
+    const toggleProfileDropdown = () => {
+      setProfileDropdownVisible(!profileDropdownVisible);
+  };
+
+  const closeProfileDropdown = () => {
+      setProfileDropdownVisible(false);
+  };
+
     const navigateToPage = (page: string) => {
       setMenuVisible(false); // Close the menu
       navigation.navigate(page); // Navigate to the selected page
     };
+
+    const toggleReason = (reason: string) => {
+      setSelectedReasons((prev) => ({
+        ...prev,
+        [reason]: !prev[reason], // Toggle the checkbox value
+      }));
+    };
+  
+    // Submit the selected reasons
+    const submitReasons = () => {
+      const selected = Object.keys(selectedReasons).filter((key) => selectedReasons[key]);
+      console.log('Submitted Reasons:', selected);
+      setModalVisible(false); // Close the modal after submission
+    };
+
   return (
     <>
       {/* Main ScrollView */}
@@ -46,12 +80,12 @@ const StudentDashboard = ({ navigation }) => {
             />
             <Image source={require('../images/GateSync.png')} style={styles.gatesync} />
           </View>
-          <TouchableOpacity onPress={() => console.log('Profile pressed')}>
-            <Image
-              source={require('../images/account.png')} // Replace with your profile icon image path
-              style={styles.profileIcon}
-            />
-          </TouchableOpacity>
+          <TouchableOpacity onPress={toggleProfileDropdown}>
+                        <Image
+                            source={require('../images/account.png')}
+                            style={styles.profileIcon}
+                        />
+                    </TouchableOpacity>
         </View>
 
         {/* QR Code Button */}
@@ -90,10 +124,45 @@ const StudentDashboard = ({ navigation }) => {
           <Text style={styles.logs}>Logs</Text>
         </View>
 
-        <TouchableOpacity style={styles.leave} onPress={() => console.log('Emergency Leave pressed')}>
-          <Image source={require('../images/exit.png')} style={styles.exiticon} />
-          <Text style={styles.emergency}>Emergency Leave?</Text>
-        </TouchableOpacity>
+       {/* Emergency Leave Button */}
+      <TouchableOpacity style={styles.leave} onPress={() => setModalVisible(true)}>
+        <Image source={require('../images/exit.png')} style={styles.exiticon} />
+        <Text style={styles.emergency}>Emergency Leave?</Text>
+      </TouchableOpacity>
+
+      {/* Modal for Emergency Reasons */}
+      <Modal
+        visible={modalVisible}
+        animationType="slide"
+        transparent={true}
+        onRequestClose={() => setModalVisible(false)}
+      >
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalTitle}>Select Emergency Reasons</Text>
+            <ScrollView style={styles.reasonList}>
+              {Object.keys(selectedReasons).map((reason, index) => (
+                <View key={index} style={styles.reasonItem}>
+                  <TouchableOpacity onPress={() => toggleReason(reason)}>
+                    <Image
+                      source={
+                        selectedReasons[reason]
+                          ? require('../images/check-box.png')  // Checked image
+                          : require('../images/blank-check-box.png') // Unchecked image
+                      }
+                      style={styles.checkboxImage}
+                    />
+                  </TouchableOpacity>
+                  <Text style={styles.reasonText}>{reason}</Text>
+                </View>
+              ))}
+            </ScrollView>
+            <TouchableOpacity style={styles.submitButton} onPress={submitReasons}>
+              <Text style={styles.submitButtonText}>Submit</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
 
         <View style={styles.content}>
           <Text style={styles.welcomeText}>Dashboard</Text>
@@ -138,6 +207,35 @@ const StudentDashboard = ({ navigation }) => {
           </Animated.View>
         </View>
       </Modal>
+
+      {profileDropdownVisible && (
+                <Modal
+                    visible={profileDropdownVisible}
+                    animationType="fade"
+                    transparent={true}
+                    onRequestClose={closeProfileDropdown}
+                >
+                    <TouchableOpacity
+                        style={styles.overlay}
+                        onPress={closeProfileDropdown}
+                    />
+                    <View style={styles.profileDropdown}>
+                        <TouchableOpacity
+                            style={styles.dropdownItem}
+                            onPress={() => console.log('Help Pressed')}
+                        >
+                            <Text style={styles.dropdownText}>Help</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            style={styles.dropdownItem}
+                            onPress={() => navigateToPage('StudentLogin')}
+                        >
+                            <Text style={styles.dropdownText}>Logout</Text>
+                        </TouchableOpacity>
+                    </View>
+                </Modal>
+            )}
+
     </>
   );
 };
@@ -434,6 +532,74 @@ const styles = StyleSheet.create({
         fontWeight: '500',
         color: '#333',
       },
+      profileDropdown: {
+        position: 'absolute',
+        top: 70,
+        right: 10,
+        width: 150,
+        backgroundColor: '#fff',
+        borderRadius: 10,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.3,
+        shadowRadius: 4,
+        elevation: 5,
+        zIndex: 999, // Ensure it appears above other elements
+    },
+    dropdownItem: {
+        padding: 10,
+        borderBottomWidth: 1,
+        borderBottomColor: '#ddd',
+    },
+    dropdownText: {
+        fontSize: 16,
+        color: '#333',
+    },
+    modalOverlay: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    },
+    modalContent: {
+      width: '80%',
+      backgroundColor: '#FFF',
+      borderRadius: 10,
+      padding: 20,
+    },
+    modalTitle: {
+      fontSize: 18,
+      fontWeight: 'bold',
+      marginBottom: 10,
+    },
+    reasonList: {
+      maxHeight: 200,
+      marginBottom: 20,
+    },
+    reasonItem: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginBottom: 10,
+    },
+    checkboxImage: {
+      width: 24,
+      height: 24,
+    },
+    reasonText: {
+      fontSize: 16,
+      marginLeft: 10,
+    },
+    submitButton: {
+      backgroundColor: '#0056FF',
+      padding: 10,
+      alignItems: 'center',
+      borderRadius: 5,
+    },
+    submitButtonText: {
+      color: '#FFF',
+      fontSize: 16,
+      fontWeight: 'bold',
+    },
 });
 
 export default StudentDashboard;
