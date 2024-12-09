@@ -7,14 +7,6 @@ const StudentDashboard = ({ navigation }) => {
     const [menuVisible, setMenuVisible] = useState(false); // State to control menu modal visibility
     const [profileDropdownVisible, setProfileDropdownVisible] = useState(false); // State for profile dropdown visibility
     const slideAnim = useRef(new Animated.Value(-400)).current; // Initial position of the modal (off-screen to the left)
-    const [modalVisible, setModalVisible] = useState(false);
-    const [selectedReasons, setSelectedReasons] = useState<{ [key: string]: boolean }>({
-      'Medical Emergency': false,
-      'Family Emergency': false,
-      'Natural Disaster': false,
-      'Personal Safety Concern': false,
-      'Other': false,
-    });
 
 
     const openMenu = () => {
@@ -47,19 +39,6 @@ const StudentDashboard = ({ navigation }) => {
       navigation.navigate(page); // Navigate to the selected page
     };
 
-    const toggleReason = (reason: string) => {
-      setSelectedReasons((prev) => ({
-        ...prev,
-        [reason]: !prev[reason], // Toggle the checkbox value
-      }));
-    };
-  
-    // Submit the selected reasons
-    const submitReasons = () => {
-      const selected = Object.keys(selectedReasons).filter((key) => selectedReasons[key]);
-      console.log('Submitted Reasons:', selected);
-      setModalVisible(false); // Close the modal after submission
-    };
 
   return (
     <>
@@ -124,45 +103,12 @@ const StudentDashboard = ({ navigation }) => {
           <Text style={styles.logs}>Logs</Text>
         </View>
 
-       {/* Emergency Leave Button */}
-      <TouchableOpacity style={styles.leave} onPress={() => setModalVisible(true)}>
+          {/* Emergency Leave Button */}
+      <TouchableOpacity style={styles.leave} onPress={() => navigation.navigate('EmergencyScreen')}>
         <Image source={require('../images/exit.png')} style={styles.exiticon} />
         <Text style={styles.emergency}>Emergency Leave?</Text>
       </TouchableOpacity>
 
-      {/* Modal for Emergency Reasons */}
-      <Modal
-        visible={modalVisible}
-        animationType="slide"
-        transparent={true}
-        onRequestClose={() => setModalVisible(false)}
-      >
-        <View style={styles.modalOverlay}>
-          <View style={styles.modalContent}>
-            <Text style={styles.modalTitle}>Select Emergency Reasons</Text>
-            <ScrollView style={styles.reasonList}>
-              {Object.keys(selectedReasons).map((reason, index) => (
-                <View key={index} style={styles.reasonItem}>
-                  <TouchableOpacity onPress={() => toggleReason(reason)}>
-                    <Image
-                      source={
-                        selectedReasons[reason]
-                          ? require('../images/check-box.png')  // Checked image
-                          : require('../images/blank-check-box.png') // Unchecked image
-                      }
-                      style={styles.checkboxImage}
-                    />
-                  </TouchableOpacity>
-                  <Text style={styles.reasonText}>{reason}</Text>
-                </View>
-              ))}
-            </ScrollView>
-            <TouchableOpacity style={styles.submitButton} onPress={submitReasons}>
-              <Text style={styles.submitButtonText}>Submit</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </Modal>
 
         <View style={styles.content}>
           <Text style={styles.welcomeText}>Dashboard</Text>
@@ -220,12 +166,13 @@ const StudentDashboard = ({ navigation }) => {
                         onPress={closeProfileDropdown}
                     />
                     <View style={styles.profileDropdown}>
-                        <TouchableOpacity
-                            style={styles.dropdownItem}
-                            onPress={() => console.log('Help Pressed')}
-                        >
-                            <Text style={styles.dropdownText}>Help</Text>
-                        </TouchableOpacity>
+                    <TouchableOpacity
+                          style={styles.dropdownItem}
+                          onPress={() => navigation.navigate('ProfileScreen')}
+                      >
+                          <Text style={styles.dropdownText}>Profile</Text>
+                      </TouchableOpacity>
+
                         <TouchableOpacity
                             style={styles.dropdownItem}
                             onPress={() => navigateToPage('StudentLogin')}
@@ -554,51 +501,6 @@ const styles = StyleSheet.create({
     dropdownText: {
         fontSize: 16,
         color: '#333',
-    },
-    modalOverlay: {
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
-      backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    },
-    modalContent: {
-      width: '80%',
-      backgroundColor: '#FFF',
-      borderRadius: 10,
-      padding: 20,
-    },
-    modalTitle: {
-      fontSize: 18,
-      fontWeight: 'bold',
-      marginBottom: 10,
-    },
-    reasonList: {
-      maxHeight: 200,
-      marginBottom: 20,
-    },
-    reasonItem: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      marginBottom: 10,
-    },
-    checkboxImage: {
-      width: 24,
-      height: 24,
-    },
-    reasonText: {
-      fontSize: 16,
-      marginLeft: 10,
-    },
-    submitButton: {
-      backgroundColor: '#0056FF',
-      padding: 10,
-      alignItems: 'center',
-      borderRadius: 5,
-    },
-    submitButtonText: {
-      color: '#FFF',
-      fontSize: 16,
-      fontWeight: 'bold',
     },
 });
 

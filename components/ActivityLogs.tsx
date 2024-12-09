@@ -1,8 +1,11 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity } from 'react-native';
 import StudentDashboard from './StudentPage';  // Import StudentPage (if needed)
 
 const MessageScreen = ({ navigation }) => {
+  // State to manage whether activities exist
+  const [hasActivities, setHasActivities] = useState(false);  // Set to 'true' if activities exist
+
   return (
     <>
       {/* Main ScrollView */}
@@ -22,16 +25,20 @@ const MessageScreen = ({ navigation }) => {
             />
             <Image source={require('../images/GateSync.png')} style={styles.gatesync} />
           </View>
-          <TouchableOpacity onPress={() => console.log('Profile pressed')}>
-            <Image
-              source={require('../images/account.png')} // Replace with your profile icon image path
-              style={styles.profileIcon}
-            />
-          </TouchableOpacity>
         </View>
 
         <View style={styles.content}>
           <Text style={styles.welcomeText}>Activity Logs</Text>
+          
+          {/* Conditionally render the "No activities" container */}
+          {!hasActivities ? (
+            <View style={styles.noActivitiesContainer}>
+              <Text style={styles.noActivitiesText}>No activities</Text>
+            </View>
+          ) : (
+            // Render activities here if hasActivities is true
+            <Text style={styles.activityText}>Activities exist</Text>
+          )}
         </View>
       </ScrollView>
     </>
@@ -70,6 +77,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3, // Shadow opacity (iOS)
     shadowRadius: 4, // Shadow radius (iOS)
     elevation: 5, // Shadow for Android
+    left: '-60%',
   },
   gatesync: {
     width: 100, // Adjust logo size
@@ -82,6 +90,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3, // Shadow opacity (iOS)
     shadowRadius: 4, // Shadow radius (iOS)
     elevation: 5, // Shadow for Android
+    left: '-60%',
   },
   back: {
     width: 30, // Adjust menu icon size
@@ -108,6 +117,24 @@ const styles = StyleSheet.create({
     fontFamily: 'Kanit',
     color: '#5394F2',
     top: -40,
+  },
+  noActivitiesContainer: {
+    backgroundColor: '#FFCCCB', // Light red background to highlight "No activities"
+    padding: 15,
+    borderRadius: 10,
+    marginTop: -10,
+    alignItems: 'center',
+  },
+  noActivitiesText: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#FF4C4C', // Red text color to show the message
+  },
+  activityText: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#4CAF50', // Green color for "Activities exist"
+    marginTop: 20,
   },
 });
 

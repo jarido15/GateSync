@@ -13,22 +13,22 @@ import {
 import LinearGradient from 'react-native-linear-gradient';
 
 const StudentLogin = ({ navigation }) => {
-  const [idNumber, setIdNumber] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const staticUser = {
-    idNumber: '123',
+    email: 'parent@example.com',
     password: 'password',
   };
 
   const handleLogin = () => {
-    if (!idNumber || !password) {
+    if (!email || !password) {
       Alert.alert('Error', 'Please fill in all fields');
       return;
     }
 
-    if (idNumber === staticUser.idNumber && password === staticUser.password) {
-      navigation.navigate('ParentPage');
+    if (email === staticUser.email && password === staticUser.password) {
+      navigation.navigate('ParentPage');  // Navigate to ParentHomeScreen
     } else {
       Alert.alert('Error', 'Invalid credentials');
     }
@@ -64,12 +64,12 @@ const StudentLogin = ({ navigation }) => {
         style={styles.inputContainer}
         keyboardVerticalOffset={100}
       >
-        <Text style={styles.ID}>ID Number</Text>
+        <Text style={styles.ID}>Email</Text>
         <TextInput
           style={styles.input}
-          placeholder="Enter ID Number"
-          value={idNumber}
-          onChangeText={setIdNumber}
+          placeholder="Enter email"
+          value={email}
+          onChangeText={setEmail}  // Set email correctly
           placeholderTextColor="#686D76"
         />
         <Text style={styles.password}>Password</Text>
@@ -82,9 +82,9 @@ const StudentLogin = ({ navigation }) => {
           placeholderTextColor="#686D76"
         />
         <TouchableOpacity style={styles.button} onPress={handleLogin}>
-        <Text style={styles.buttonText}>Login</Text>
-      </TouchableOpacity>
-      <Text style={styles.forgotpassword}>Forgot Password</Text>
+          <Text style={styles.buttonText}>Login</Text>
+        </TouchableOpacity>
+        <Text style={styles.forgotpassword}>Forgot Password</Text>
       </KeyboardAvoidingView>
 
       <Text style={styles.haveacc}>Don't have an account?</Text>

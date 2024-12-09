@@ -25,7 +25,7 @@ const LinkedParent = ({ navigation }) => {
       <ScrollView style={styles.container}>
         {/* Navigation Bar */}
         <View style={styles.navbar}>
-          <TouchableOpacity onPress={() => navigation.navigate('StudentPage')}>
+          <TouchableOpacity onPress={() => navigation.navigate('ParentPage')}>
             <Image
               source={require('../images/back.png')} // Replace with your back icon image path
               style={styles.back}
@@ -54,7 +54,7 @@ const LinkedParent = ({ navigation }) => {
 
         {/* Message Container */}
         <View style={styles.messagecontainer}>
-          <TouchableOpacity onPress={() => navigation.navigate('ChatPage')}>
+          <TouchableOpacity onPress={() => navigation.navigate('ParentChatPage')}>
             <View style={styles.chatbar} />
             <Text style={styles.chatname}>John Padilla</Text>
             <View style={styles.chatcircle}>

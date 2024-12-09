@@ -52,7 +52,7 @@ const MessageScreen = ({ navigation }) => {
 
         {/* Message container */}
         <View style={styles.messagecontainer}>
-          <TouchableOpacity onPress={() => navigation.navigate('ChatPage')}>
+          <TouchableOpacity onPress={() => navigation.navigate('ParentChatPage')}>
             <View style={styles.chatbar}/>
             <Text style={styles.chatname}>John Padilla</Text>
           </TouchableOpacity>

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, Image, Modal } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, Image, Modal, Keyboard, TouchableWithoutFeedback, KeyboardAvoidingView, Platform } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
 const StudentSignup = ({ navigation }) => {
@@ -7,6 +7,8 @@ const StudentSignup = ({ navigation }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [idNumber, setIdNumber] = useState('');
+    const [yearLevel, setYearLevel] = useState('');
+    const [course, setCourse] = useState('');
     const [isModalVisible, setModalVisible] = useState(false);
 
     // Static user data
@@ -19,7 +21,7 @@ const StudentSignup = ({ navigation }) => {
 
     const handleSignup = () => {
         // Validation for empty fields
-        if (!username || !email || !password || !idNumber) {
+        if (!username || !email || !password || !idNumber || !yearLevel || !course) {
             Alert.alert('Error', 'Please fill in all fields');
             return;
         }
@@ -40,101 +42,132 @@ const StudentSignup = ({ navigation }) => {
     };
 
     return (
-        <View style={styles.container}>
-            <View style={styles.bluecircle} />
-            <LinearGradient
-                colors={['#5cb8ff', '#6b9bfa']}
-                style={styles.bluecircle2}
-            />
-            <Text style={styles.heading}>Student</Text>
-            <Text style={styles.heading}>Sign Up</Text>
+        <KeyboardAvoidingView
+            style={styles.container}
+            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        >
+            <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+                <View style={styles.inner}>
+                    <View style={styles.bluecircle} />
+                    <LinearGradient
+                        colors={['#5cb8ff', '#6b9bfa']}
+                        style={styles.bluecircle2}
+                    />
 
-            <Image
-                source={require('../images/facescanner.png')} 
-                style={styles.facescanner}
-            />
-            <Image
-                source={require('../images/arrows.png')} 
-                style={styles.arrows1}
-            />
-            <TouchableOpacity onPress={() => navigation.navigate('StudentLogin')}>
-                <Image
-                    source={require('../images/arrow_back.png')}
-                    style={styles.arrow}
-                />
-            </TouchableOpacity>
+                    <Text style={styles.heading}>Sign Up</Text>
 
-            <View style={styles.inputContainer}>
-                <Text style={styles.label}>Username</Text>
-                <TextInput
-                    style={styles.input}
-                    placeholder="Enter Username"
-                    value={username}
-                    onChangeText={setUsername}
-                    placeholderTextColor={'#686D76'}
-                />
-
-                <Text style={styles.label}>Email</Text>
-                <TextInput
-                    style={styles.input}
-                    placeholder="Enter Email"
-                    value={email}
-                    onChangeText={setEmail}
-                    keyboardType="email-address"
-                    placeholderTextColor={'#686D76'}
-                />
-
-                <Text style={styles.label}>ID Number</Text>
-                <TextInput
-                    style={styles.input}
-                    placeholder="Enter ID Number"
-                    value={idNumber}
-                    onChangeText={setIdNumber}
-                    placeholderTextColor={'#686D76'}
-                />
-
-                <Text style={styles.label}>Password</Text>
-                <TextInput
-                    style={styles.input}
-                    placeholder="Enter Password"
-                    secureTextEntry
-                    value={password}
-                    onChangeText={setPassword}
-                    placeholderTextColor={'#686D76'}
-                />
-            </View>
-
-            <TouchableOpacity style={styles.button} onPress={handleSignup}>
-                <Text style={styles.buttonText}>Sign up</Text>
-            </TouchableOpacity>
-
-            <Modal
-                visible={isModalVisible}
-                transparent={true}
-                animationType="fade"
-                onRequestClose={() => setModalVisible(false)}
-            >
-                <View style={styles.modalOverlay}>
-                    <View style={styles.modalContent}>
+                    <Image
+                        source={require('../images/facescanner.png')} 
+                        style={styles.facescanner}
+                    />
+                    <Image
+                        source={require('../images/arrows.png')} 
+                        style={styles.arrows1}
+                    />
+                    <TouchableOpacity onPress={() => navigation.navigate('StudentLogin')}>
                         <Image
-                            source={require('../images/Check.png')} // Replace with your custom image
-                            style={styles.modalImage}
+                            source={require('../images/arrow_back.png')}
+                            style={styles.arrow}
                         />
-                        <Text style={styles.modalTitle}>Registration Successful!</Text>
-                        <Text style={styles.modalMessage}>Welcome, {username}! You have successfully registered.</Text>
-                        <TouchableOpacity
-                            style={styles.modalButton}
-                            onPress={() => {
-                                setModalVisible(false);
-                                navigation.navigate('StudentLogin');
-                            }}
-                        >
-                            <Text style={styles.modalButtonText}>Go to Login</Text>
-                        </TouchableOpacity>
+                    </TouchableOpacity>
+
+                    <View style={styles.inputContainer}>
+                        <Text style={styles.label}>Username</Text>
+                        <TextInput
+                            style={styles.input}
+                            placeholder="Enter Username"
+                            value={username}
+                            onChangeText={setUsername}
+                            placeholderTextColor={'#686D76'}
+                        />
+
+
+                        <View style={styles.row}>
+                            <View style={styles.inputHalf}>
+                                <Text style={styles.label}>ID Number</Text>
+                                <TextInput
+                                    style={styles.input}
+                                    placeholder="Enter ID Number"
+                                    value={idNumber}
+                                    onChangeText={setIdNumber}
+                                    placeholderTextColor={'#686D76'}
+                                />
+                            </View>
+                            <View style={styles.inputHalf}>
+                                <Text style={styles.label}>Year Level</Text>
+                                <TextInput
+                                    style={styles.input}
+                                    placeholder="Enter Year Level"
+                                    value={yearLevel}
+                                    onChangeText={setYearLevel}
+                                    placeholderTextColor={'#686D76'}
+                                />
+                            </View>
+                        </View>
+
+                        <Text style={styles.label}>Course</Text>
+                        <TextInput
+                            style={styles.input}
+                            placeholder="Enter Course"
+                            value={course}
+                            onChangeText={setCourse}
+                            placeholderTextColor={'#686D76'}
+                        />
+
+                        <Text style={styles.label}>Email</Text>
+                        <TextInput
+                            style={styles.input}
+                            placeholder="Enter Email"
+                            value={email}
+                            onChangeText={setEmail}
+                            keyboardType="email-address"
+                            placeholderTextColor={'#686D76'}
+                        />
+
+                        <Text style={styles.label}>Password</Text>
+                        <TextInput
+                            style={styles.input}
+                            placeholder="Enter Password"
+                            secureTextEntry
+                            value={password}
+                            onChangeText={setPassword}
+                            placeholderTextColor={'#686D76'}
+                        />
                     </View>
+
+                    <TouchableOpacity style={styles.button} onPress={handleSignup}>
+                        <Text style={styles.buttonText}>Sign up</Text>
+                    </TouchableOpacity>
+
+                    <Modal
+                        visible={isModalVisible}
+                        transparent={true}
+                        animationType="fade"
+                        onRequestClose={() => setModalVisible(false)}
+                    >
+                        <View style={styles.modalOverlay}>
+                            <View style={styles.modalContent}>
+                                <Image
+                                    source={require('../images/Check.png')} // Replace with your custom image
+                                    style={styles.modalImage}
+                                />
+                                <Text style={styles.modalTitle}>Registration Successful!</Text>
+                                <Text style={styles.modalMessage}>Welcome, {username}! You have successfully registered.</Text>
+                                <TouchableOpacity
+                                    style={styles.modalButton}
+                                    onPress={() => {
+                                        setModalVisible(false);
+                                        navigation.navigate('StudentLogin');
+                                    }}
+                                >
+                                    <Text style={styles.modalButtonText}>Go to Login</Text>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                    </Modal>
                 </View>
-            </Modal>
-        </View>
+            </TouchableWithoutFeedback>
+        </KeyboardAvoidingView>
     );
 };
 
@@ -146,10 +179,16 @@ const styles = StyleSheet.create({
         backgroundColor: '#f5f5f5',
         padding: 20,
     },
+    inner: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: '100%',
+    },
     heading: {
-        fontSize: 48,
+        fontSize: 38,
         fontWeight: '500',
-        bottom: 570,
+        bottom: 610,
         color: '#fff',
         textShadowColor: '#000',
         textShadowOffset: { width: 1, height: 2 },
@@ -158,19 +197,19 @@ const styles = StyleSheet.create({
     arrow: {
         width: 53,
         height: 49,
-        top: -800,
+        top: -735,
         right: 150,
     },
     facescanner: {
         width: 57,
         height: 61,
-        top: -820,
+        top: -730,
         right: 150,
     },
     arrows1: {
         width: 22,
         height: 19,
-        top: -840,
+        top: -750,
         right: 170,
     },
     bluecircle: {
@@ -192,8 +231,8 @@ const styles = StyleSheet.create({
     },
     inputContainer: {
         width: '100%',
-        height: 470,
-        bottom: 680,
+        height: 570,
+        bottom: 730,
         backgroundColor: '#ffffff',
         borderRadius: 15,
         padding: 20,
@@ -219,11 +258,18 @@ const styles = StyleSheet.create({
         borderRadius: 15,
         backgroundColor: '#fff',
     },
+    row: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+    },
+    inputHalf: {
+        width: '48%', // 48% to leave some space between inputs
+    },
     button: {
         backgroundColor: '#000',
         width: '85%',
         height: 43,
-        top: -755,
+        top: '-110%',
         borderRadius: 8,
         alignItems: 'center',
         marginBottom: 20,
@@ -233,20 +279,6 @@ const styles = StyleSheet.create({
         color: '#fff',
         top: 8,
         fontWeight: 'bold',
-    },
-    haveacc: {
-        color: 'black',
-        fontSize: 16,
-        fontWeight: '400',
-        top: -725,
-    },
-    registerLink: {
-        marginTop: 10,
-    },
-    registerText: {
-        color: '#ACC7E0',
-        fontSize: 16,
-        top: -730,
     },
     modalOverlay: {
         flex: 1,
