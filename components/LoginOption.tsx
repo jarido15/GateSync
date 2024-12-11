@@ -1,11 +1,13 @@
 // LoginScreen.js
 import React from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity, StatusBar } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
 const LoginScreen = ({ navigation }) => {
     return (
         <View style={styles.container}>
+             <StatusBar backgroundColor="#F7F7F7" barStyle="light-content" />
+
             {/* Add blue circle */}
             <View style={styles.bluecircle} />
             <LinearGradient

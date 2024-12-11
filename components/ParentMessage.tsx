@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity, Modal, Animated } from 'react-native';
+import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity, Modal, Animated, StatusBar } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
 const MessageScreen = ({ navigation }) => {
@@ -32,6 +32,7 @@ const MessageScreen = ({ navigation }) => {
     <>
       {/* Main ScrollView */}
       <ScrollView style={styles.container}>
+      <StatusBar backgroundColor="#BCE5FF" barStyle="light-content" />
         {/* Navigation Bar */}
         <View style={styles.navbar}>
           <TouchableOpacity onPress={openMenu}>
@@ -54,7 +55,7 @@ const MessageScreen = ({ navigation }) => {
         <View style={styles.messagecontainer}>
           <TouchableOpacity onPress={() => navigation.navigate('ParentChatPage')}>
             <View style={styles.chatbar}/>
-            <Text style={styles.chatname}>John Padilla</Text>
+            <Text style={styles.chatname}>John Doe</Text>
           </TouchableOpacity>
         </View>
         <View style={styles.chatcircle}>
@@ -89,14 +90,8 @@ const MessageScreen = ({ navigation }) => {
               </TouchableOpacity>
 
               {/* Menu Options */}
-              <TouchableOpacity onPress={() => navigateToPage('QRCode')} style={styles.menuOption}>
-                <Text style={styles.menuOptionText}>QR Code</Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => navigateToPage('ActivityLogs')} style={styles.menuOption}>
-                <Text style={styles.menuOptionText}>Activity Logs</Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => navigateToPage('LinkedParent')} style={styles.menuOption}>
-                <Text style={styles.menuOptionText}>Linked Parent</Text>
+              <TouchableOpacity onPress={() => navigateToPage('LinkedChildren')} style={styles.menuOption}>
+                <Text style={styles.menuOptionText}>Linked Children</Text>
               </TouchableOpacity>
               <TouchableOpacity onPress={() => console.log('Settings Pressed')} style={styles.menuOption}>
                 <Text style={styles.menuOptionText}>Settings</Text>

@@ -1,8 +1,8 @@
 import React, { useRef, useState } from 'react';
-import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity, Modal, Animated } from 'react-native';
+import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity, Modal, Animated, StatusBar } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
-const MessageScreen = ({ navigation }) => {
+const NotificationScreen = ({ navigation }) => {
     const [menuVisible, setMenuVisible] = useState(false); // State to control menu modal visibility
     const [notifications, setNotifications] = useState([]); // Array to hold notifications
     const slideAnim = useRef(new Animated.Value(-400)).current; // Initial position of the modal (off-screen to the left)
@@ -32,6 +32,7 @@ const MessageScreen = ({ navigation }) => {
     return (
         <>
             <ScrollView style={styles.container}>
+            <StatusBar backgroundColor="#BCE5FF" barStyle="light-content" />
                 <View style={styles.navbar}>
                     <TouchableOpacity onPress={openMenu}>
                         <Image
@@ -135,7 +136,7 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.3, // Shadow opacity (iOS)
         shadowRadius: 4, // Shadow radius (iOS)
         elevation: 5, // Shadow for Android
-        left: '-60%',
+        left: '-67%',
     },
     gatesync: {
         width: 100, // Adjust logo size
@@ -148,7 +149,7 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.3, // Shadow opacity (iOS)
         shadowRadius: 4, // Shadow radius (iOS)
         elevation: 5, // Shadow for Android
-        left: '-60%',
+        left: '-67%',
     },
     menuIcon: {
         width: 30, // Adjust menu icon size
@@ -263,4 +264,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default MessageScreen;
+export default NotificationScreen;

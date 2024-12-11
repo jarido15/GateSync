@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Modal,
   Animated,
+  StatusBar,
 } from 'react-native';
 
 const ParentHomeScreen = ({ navigation }) => {
@@ -46,6 +47,7 @@ const ParentHomeScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
+       <StatusBar backgroundColor="#BCE5FF" barStyle="light-content" />
       {/* Navigation Bar */}
       <View style={styles.navbar}>
         <TouchableOpacity onPress={openMenu}>

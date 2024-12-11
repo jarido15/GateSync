@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';  // Import useEffect
-import { StyleSheet, Image } from 'react-native';
+import { StyleSheet, Image, StatusBar } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
 const SplashScreen = ({ navigation }) => {
@@ -16,6 +16,8 @@ const SplashScreen = ({ navigation }) => {
             colors={['#2f3ead', '#5cb8ff']}
             style={styles.container}
         >
+              <StatusBar backgroundColor="#2F3EAD" barStyle="light-content" />
+
             <Image
                 source={require('../images/facescanner.png')} 
                 style={styles.image}

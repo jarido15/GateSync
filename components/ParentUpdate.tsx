@@ -1,8 +1,8 @@
 import React, { useRef, useState } from 'react';
-import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity, Modal, Animated } from 'react-native';
+import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity, Modal, Animated, StatusBar } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
-const MessageScreen = ({ navigation }) => {
+const ParentUpdate = ({ navigation }) => {
     const [menuVisible, setMenuVisible] = useState(false); // State to control menu modal visibility
     const [notifications, setNotifications] = useState([]); // Array to hold notifications
     const slideAnim = useRef(new Animated.Value(-400)).current; // Initial position of the modal (off-screen to the left)
@@ -32,6 +32,7 @@ const MessageScreen = ({ navigation }) => {
     return (
         <>
             <ScrollView style={styles.container}>
+            <StatusBar backgroundColor="#BCE5FF" barStyle="light-content" />
                 <View style={styles.navbar}>
                     <TouchableOpacity onPress={openMenu}>
                         <Image
@@ -80,14 +81,8 @@ const MessageScreen = ({ navigation }) => {
                             <TouchableOpacity onPress={closeMenu} style={styles.closeButton}>
                                 <Text style={styles.closeButtonText}>X</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity onPress={() => navigateToPage('QRCode')} style={styles.menuOption}>
-                                <Text style={styles.menuOptionText}>QR Code</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity onPress={() => navigateToPage('ActivityLogs')} style={styles.menuOption}>
-                                <Text style={styles.menuOptionText}>Activity Logs</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity onPress={() => navigateToPage('LinkedParent')} style={styles.menuOption}>
-                                <Text style={styles.menuOptionText}>Linked Parent</Text>
+                            <TouchableOpacity onPress={() => navigateToPage('LinkedChildren')} style={styles.menuOption}>
+                                <Text style={styles.menuOptionText}>Linked Children</Text>
                             </TouchableOpacity>
                             <TouchableOpacity onPress={() => console.log('Settings Pressed')} style={styles.menuOption}>
                                 <Text style={styles.menuOptionText}>Settings</Text>
@@ -263,4 +258,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default MessageScreen;
+export default ParentUpdate;

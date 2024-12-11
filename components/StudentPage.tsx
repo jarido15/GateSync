@@ -1,6 +1,6 @@
 /* eslint-disable no-trailing-spaces */
 import React, { useRef, useState } from 'react';
-import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity, Modal, Animated } from 'react-native';
+import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity, Modal, Animated, StatusBar } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
 const StudentDashboard = ({ navigation }) => {
@@ -44,6 +44,7 @@ const StudentDashboard = ({ navigation }) => {
     <>
       {/* Main ScrollView */}
       <ScrollView style={styles.container}>
+      <StatusBar backgroundColor="#BCE5FF" barStyle="light-content" />
         {/* Navigation Bar */}
         <View style={styles.navbar}>
           <TouchableOpacity onPress={openMenu}>

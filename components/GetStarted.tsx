@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Button, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { View, Text, Button, StyleSheet, Image, TouchableOpacity, StatusBar } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient'; // Import LinearGradient
 
 const GetStartedScreen = ({ navigation }) => {
@@ -8,6 +8,8 @@ const GetStartedScreen = ({ navigation }) => {
             colors={['#2f3ead', '#5cb8ff']}  // Gradient colors
             style={styles.container} // Apply gradient styles
         >
+             <StatusBar backgroundColor="#2F3EAD" barStyle="light-content" />
+
             <TouchableOpacity
                     style={styles.button}
                     onPress={() => navigation.navigate('LoginOption')} // Navigate to the Login screen

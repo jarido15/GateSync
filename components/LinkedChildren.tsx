@@ -55,7 +55,7 @@ const LinkedParent = ({ navigation }) => {
           {!isAdded && (
             <>
               <View style={styles.chatbar} />
-              <Text style={styles.chatname}>John Padilla</Text>
+              <Text style={styles.chatname}>John Doe</Text>
               <View style={styles.chatcircle}>
                 <Image
                   source={require('../images/account_circle.png')}
@@ -74,7 +74,7 @@ const LinkedParent = ({ navigation }) => {
 
         <View style={styles.bar} />
         <View style={styles.content}>
-          <Text style={styles.welcomeText}>Link Account</Text>
+          <Text style={styles.welcomeText}>Linked Accounts</Text>
         </View>
       </ScrollView>
       {/* Toast Component */}

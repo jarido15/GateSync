@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity, StatusBar } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
 const ViewQRPage = ({ navigation }) => {
@@ -8,6 +8,7 @@ const ViewQRPage = ({ navigation }) => {
       colors={['#FFFFFF', '#84B4FC']} // Gradient background for the full page
       style={styles.container}
     >
+      <StatusBar backgroundColor="#fFF" barStyle="light-content" />
       <LinearGradient
         colors={['#82D8FF', '#0040FF']} // Gradient colors for content container
         style={styles.contentContainer}

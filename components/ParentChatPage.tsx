@@ -55,7 +55,7 @@ const ChatPage = ({ navigation }) => {
                 style={styles.back}
               />
             </TouchableOpacity>
-            <Text style={styles.name}>John Padilla</Text>
+            <Text style={styles.name}>John Doe</Text>
             <Image source={require('../images/accountcircle.png')} style={styles.account} />
           </View>
 

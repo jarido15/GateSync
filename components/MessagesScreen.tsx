@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity, Modal, Animated } from 'react-native';
+import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity, Modal, Animated, StatusBar } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
 const MessageScreen = ({ navigation }) => {
@@ -32,6 +32,7 @@ const MessageScreen = ({ navigation }) => {
     <>
       {/* Main ScrollView */}
       <ScrollView style={styles.container}>
+      <StatusBar backgroundColor="#BCE5FF" barStyle="light-content" />
         {/* Navigation Bar */}
         <View style={styles.navbar}>
           <TouchableOpacity onPress={openMenu}>
@@ -157,7 +158,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 4,
     elevation: 5,
-    left: '-60%',
+    left: '-67%',
   },
   gatesync: {
     width: 100,
@@ -170,7 +171,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 4,
     elevation: 5,
-    left: '-60%',
+    left: '-67%',
   },
   menuIcon: {
     width: 30,

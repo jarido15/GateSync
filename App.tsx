@@ -158,6 +158,7 @@ const ParentPageTabs = () => (
 // Main App Component
 const App = () => {
   return (
+    
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Splash">
         {/* Splash screen route */}
