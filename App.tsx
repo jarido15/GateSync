@@ -30,6 +30,7 @@ import ParentMessage from './components/ParentMessage';
 import ParentChatPage from './components/ParentChatPage';
 import LinkChildren from './components/LinkChildren';
 import LinkedChildren from './components/LinkedChildren';
+import ScheduleScreen from './components/ScheduleScreen';
 
 // Create Stack and Tab Navigators
 const Stack = createStackNavigator();
@@ -158,7 +159,7 @@ const ParentPageTabs = () => (
 // Main App Component
 const App = () => {
   return (
-    
+
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Splash">
         {/* Splash screen route */}
@@ -245,6 +246,11 @@ const App = () => {
         <Stack.Screen
           name="ProfileScreen"
           component={ProfileScreen}
+          options={{ headerShown: false }}
+        />
+         <Stack.Screen
+          name="ScheduleScreen"
+          component={ScheduleScreen}
           options={{ headerShown: false }}
         />
 

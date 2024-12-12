@@ -107,7 +107,16 @@ const StudentDashboard = ({ navigation }) => {
           {/* Emergency Leave Button */}
       <TouchableOpacity style={styles.leave} onPress={() => navigation.navigate('EmergencyScreen')}>
         <Image source={require('../images/exit.png')} style={styles.exiticon} />
-        <Text style={styles.emergency}>Emergency Leave?</Text>
+        <Text style={styles.emergency}>Emergency</Text>
+        <Text style={styles.emergency}>Leave?</Text>
+      </TouchableOpacity>
+
+
+         {/* Emergency Leave Button */}
+         <TouchableOpacity style={styles.class} onPress={() => navigation.navigate('ScheduleScreen')}>
+        <Image source={require('../images/add-schedule.png')} style={styles.schedicon} />
+        <Text style={styles.schedule}>Add</Text>
+        <Text style={styles.schedule}>Schedule</Text>
       </TouchableOpacity>
 
 
@@ -226,12 +235,12 @@ const styles = StyleSheet.create({
         elevation: 6, // Elevation level for Android
     },
     leave:{
-        width: '90%',
+        width: '42%',
         height: 80,
-        backgroundColor: '#1F509A',
+        backgroundColor: '#0E46A3',
         marginTop: 10,
-        top: '18%',
-        alignSelf: 'center',
+        top: '15.6%',
+        left: '5%',
         borderRadius: 21,
         shadowColor: 'black', // Shadow color (iOS)
         shadowOffset: { width: 4, height: 2 }, // Shadow offset (iOS)
@@ -240,21 +249,51 @@ const styles = StyleSheet.create({
         elevation: 5, // Shadow for Android
     },
     exiticon:{
-        width: 65,
-        height: 63,
-        right: '-80%',
-        top: '10%',
+        width: 45,
+        height: 43,
+        right: '-70%',
+        top: '25%',
     },
     emergency: {
         color: '#fff',
-        fontSize: 24,
-        lineHeight: 29,
-        letterSpacing: 3,
+        fontSize: 15,
+        lineHeight: 20,
+        letterSpacing: 2,
         fontFamily: 'Kanit-SemiBold',
         fontWeight: '900',
-        right: '-5%',
-        top: '-48%',
+        right: '-7%',
+        top: '-25%',
     },
+    class:{
+      width: '42%',
+      height: 80,
+      backgroundColor: '#08C2FF',
+      marginTop: 10,
+      top: '4%',
+      left: '53%',
+      borderRadius: 21,
+      shadowColor: 'black', // Shadow color (iOS)
+      shadowOffset: { width: 4, height: 2 }, // Shadow offset (iOS)
+      shadowOpacity: 0.3, // Shadow opacity (iOS)
+      shadowRadius: 4, // Shadow radius (iOS)
+      elevation: 5, // Shadow for Android
+  },
+  schedicon:{
+      width: 45,
+      height: 43,
+      right: '-70%',
+      top: '25%',
+  },
+  schedule: {
+      color: '#fff',
+      fontSize: 15,
+      lineHeight: 20,
+      letterSpacing: 3,
+      fontFamily: 'Kanit-SemiBold',
+      fontWeight: '900',
+      right: '-7%',
+      top: '-25%',
+  },
     line:{
         width: '90%',
         height: 3,
@@ -274,7 +313,7 @@ const styles = StyleSheet.create({
         height: 250,
         backgroundColor: '#CFE5FF',
         marginTop: 10,
-        top: '16%',
+        top: '13%',
         alignSelf: 'center',
         borderRadius: 21,
         shadowColor: 'black', // Shadow color (iOS)
@@ -364,7 +403,7 @@ const styles = StyleSheet.create({
         height: 170,
         borderRadius:21 ,
         alignSelf: 'center',
-        top: '55%',
+        top: '49%',
         shadowColor: 'black', // Shadow color (iOS)
         shadowOffset: { width: 4, height: 2 }, // Shadow offset (iOS)
         shadowOpacity: 0.3, // Shadow opacity (iOS)
@@ -431,7 +470,7 @@ const styles = StyleSheet.create({
         fontSize: 36,
         fontWeight: '800',
         color: '#5394F2',
-        top: -550,
+        top: -640,
         fontFamily: 'Kanit-SemiBold',
     },
     modalContainer: {
