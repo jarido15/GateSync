@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, Image, Modal, Keyboard, TouchableWithoutFeedback, KeyboardAvoidingView, Platform } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import { createUserWithEmailAndPassword } from 'firebase/auth'; // Import Firebase Auth
+import { db, auth } from './firebase'; // Import Firebase Auth and Firestore
+import { collection, addDoc } from 'firebase/firestore'; // Import Firestore functions
 
 const StudentSignup = ({ navigation }) => {
     const [username, setUsername] = useState('');
@@ -11,33 +14,33 @@ const StudentSignup = ({ navigation }) => {
     const [course, setCourse] = useState('');
     const [isModalVisible, setModalVisible] = useState(false);
 
-    // Static user data
-    const staticUser = {
-        username: 'test',
-        email: 'test@example.com',
-        password: 'password',
-        idNumber: '123',
-    };
-
-    const handleSignup = () => {
+    const handleSignup = async () => {
         // Validation for empty fields
         if (!username || !email || !password || !idNumber || !yearLevel || !course) {
             Alert.alert('Error', 'Please fill in all fields');
             return;
         }
 
-        // Check if the entered details match the static user
-        if (
-            username === staticUser.username &&
-            email === staticUser.email &&
-            password === staticUser.password &&
-            idNumber === staticUser.idNumber
-        ) {
-            Alert.alert('Success', `Welcome, ${username}!`);
-            // Navigate to login or dashboard
-            navigation.navigate('StudentLogin');
-        } else {
-            Alert.alert('Error', 'User registration failed. Static user details do not match.');
+        try {
+            // Step 1: Create the user using Firebase Authentication
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+
+            // Step 2: Add user details to Firestore (students collection)
+            await addDoc(collection(db, "students"), {
+                username,
+                email,
+                idNumber,
+                yearLevel,
+                course,
+                uid: user.uid, // Store the user UID for reference
+            });
+
+            // Step 3: Show success modal
+            setModalVisible(true);
+        } catch (error) {
+            console.error("Error signing up:", error.message);
+            Alert.alert('Error', 'An error occurred while signing up. Please try again.');
         }
     };
 
@@ -299,8 +302,8 @@ const styles = StyleSheet.create({
         elevation: 5,
     },
     modalImage: {
-        width: 100,
-        height: 100,
+        width: 117,
+        height: 110,
         marginBottom: 20,
     },
     modalTitle: {

@@ -11,28 +11,47 @@ import {
   Platform,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import { collection, query, where, getDocs } from 'firebase/firestore';
+import { db } from './firebase'; // Your Firestore configuration
 
 const StudentLogin = ({ navigation }) => {
-  const [idNumber, setIdNumber] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const staticUser = {
-    idNumber: '123',
-    password: 'password',
-  };
+ 
+const handleLogin = async () => {
+  if (!email || !password) {
+    Alert.alert('Error', 'Please fill in all fields');
+    return;
+  }
 
-  const handleLogin = () => {
-    if (!idNumber || !password) {
-      Alert.alert('Error', 'Please fill in all fields');
-      return;
-    }
+  try {
+    // Firebase Auth login
+    const auth = getAuth();
+    await signInWithEmailAndPassword(auth, email, password);
 
-    if (idNumber === staticUser.idNumber && password === staticUser.password) {
-      navigation.navigate('StudentPage');
+    // After successful authentication, check Firestore for the student data
+    const studentsRef = collection(db, "students");
+    const q = query(
+      studentsRef,
+      where("email", "==", email) // Match by email
+    );
+
+    const querySnapshot = await getDocs(q);
+
+    if (!querySnapshot.empty) {
+      // Successful login
+      navigation.navigate("StudentPage");
     } else {
-      Alert.alert('Error', 'Invalid credentials');
+      Alert.alert("Error", "Invalid email or password");
     }
-  };
+  } catch (error) {
+    console.error("Error logging in:", error.message);
+    Alert.alert("Error", "Something went wrong. Please try again.");
+  }
+};
+
 
   return (
     <View style={styles.container}>
@@ -64,13 +83,14 @@ const StudentLogin = ({ navigation }) => {
         style={styles.inputContainer}
         keyboardVerticalOffset={100}
       >
-        <Text style={styles.ID}>ID Number</Text>
+        <Text style={styles.email}>Email</Text>
         <TextInput
           style={styles.input}
-          placeholder="Enter ID Number"
-          value={idNumber}
-          onChangeText={setIdNumber}
+          placeholder="Enter Email"
+          value={email}
+          onChangeText={setEmail}
           placeholderTextColor="#686D76"
+          keyboardType="email-address"
         />
         <Text style={styles.password}>Password</Text>
         <TextInput
@@ -176,7 +196,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     marginBottom: 20,
   },
-  ID: {
+  email: {
     color: 'black',
     fontSize: 16,
     fontWeight: '400',
