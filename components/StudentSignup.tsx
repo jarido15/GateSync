@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, Image, Modal, Keyboard, TouchableWithoutFeedback, KeyboardAvoidingView, Platform } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import { createUserWithEmailAndPassword } from 'firebase/auth'; // Import Firebase Auth
-import { db, auth } from './firebase'; // Import Firebase Auth and Firestore
-import { collection, addDoc } from 'firebase/firestore'; // Import Firestore functions
+import { createUserWithEmailAndPassword } from 'firebase/auth'; // Firebase Auth
+import { db, auth } from './firebase'; // Firebase Auth and Firestore
+import { collection, addDoc } from 'firebase/firestore'; // Firestore
+import QRCode from 'react-native-qrcode-svg'; // QR Code Library
 
 const StudentSignup = ({ navigation }) => {
     const [username, setUsername] = useState('');
@@ -13,36 +14,42 @@ const StudentSignup = ({ navigation }) => {
     const [yearLevel, setYearLevel] = useState('');
     const [course, setCourse] = useState('');
     const [isModalVisible, setModalVisible] = useState(false);
+    const [qrData, setQrData] = useState(''); // For storing QR code data
 
     const handleSignup = async () => {
-        // Validation for empty fields
+        // Validate fields
         if (!username || !email || !password || !idNumber || !yearLevel || !course) {
             Alert.alert('Error', 'Please fill in all fields');
             return;
         }
-
+    
         try {
-            // Step 1: Create the user using Firebase Authentication
+            // Step 1: Create the user in Firebase Auth
             const userCredential = await createUserWithEmailAndPassword(auth, email, password);
             const user = userCredential.user;
-
-            // Step 2: Add user details to Firestore (students collection)
-            await addDoc(collection(db, "students"), {
+    
+            // Step 2: Prepare QR code data (e.g., ID number or unique identifier)
+            const qrDataString = `${username}-${idNumber}`; // Example: "JohnDoe-123456"
+            setQrData(qrDataString);
+    
+            // Step 3: Save user details and QR code data to Firestore (without 'uid')
+            await addDoc(collection(db, 'students'), {
                 username,
                 email,
                 idNumber,
                 yearLevel,
                 course,
-                uid: user.uid, // Store the user UID for reference
+                qrData: qrDataString, // Save QR code data
             });
-
-            // Step 3: Show success modal
+    
+            // Step 4: Show success modal
             setModalVisible(true);
         } catch (error) {
-            console.error("Error signing up:", error.message);
+            console.error('Error signing up:', error.message);
             Alert.alert('Error', 'An error occurred while signing up. Please try again.');
         }
     };
+    
 
     return (
         <KeyboardAvoidingView
@@ -64,7 +71,7 @@ const StudentSignup = ({ navigation }) => {
                         style={styles.facescanner}
                     />
                     <Image
-                        source={require('../images/arrows.png')} 
+                        source={require('../images/arrows.png')}
                         style={styles.arrows1}
                     />
                     <TouchableOpacity onPress={() => navigation.navigate('StudentLogin')}>

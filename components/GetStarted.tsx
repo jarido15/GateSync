@@ -1,53 +1,46 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, Text, Button, StyleSheet, Image, TouchableOpacity, StatusBar } from 'react-native';
-import LinearGradient from 'react-native-linear-gradient'; // Import LinearGradient
+import LinearGradient from 'react-native-linear-gradient'; 
+import AsyncStorage from '@react-native-async-storage/async-storage'; 
 
 const GetStartedScreen = ({ navigation }) => {
+    useEffect(() => {
+        const checkIfFirstLaunch = async () => {
+            const hasSeenIntro = await AsyncStorage.getItem('hasSeenIntro');
+            if (hasSeenIntro) {
+                navigation.replace('LoginOption'); // Redirect if already seen
+            }
+        };
+        checkIfFirstLaunch();
+    }, []);
+
+    const handleGetStarted = async () => {
+        await AsyncStorage.setItem('hasSeenIntro', 'true'); // Store the flag
+        navigation.replace('LoginOption'); // Navigate to the next screen
+    };
+
     return (
         <LinearGradient
-            colors={['#2f3ead', '#5cb8ff']}  // Gradient colors
-            style={styles.container} // Apply gradient styles
+            colors={['#2f3ead', '#5cb8ff']}
+            style={styles.container}
         >
-             <StatusBar backgroundColor="#2F3EAD" barStyle="light-content" />
+            <StatusBar backgroundColor="#2F3EAD" barStyle="light-content" />
 
-            <TouchableOpacity
-                    style={styles.button}
-                    onPress={() => navigation.navigate('LoginOption')} // Navigate to the Login screen
-                >
-                    <Text style={styles.buttonText}>Get Started</Text>
-                </TouchableOpacity>
+            <TouchableOpacity style={styles.button} onPress={handleGetStarted}>
+                <Text style={styles.buttonText}>Get Started</Text>
+            </TouchableOpacity>
 
-
-            <Image
-                source={require('../images/facescanner.png')} 
-                style={styles.image}
-            />
-            <Image
-                source={require('../images/arrows.png')} 
-                style={styles.imagearrow}
-            />
-            <Image
-                source={require('../images/GateSync.png')} 
-                style={styles.imageGS}
-            />
+            <Image source={require('../images/facescanner.png')} style={styles.image} />
+            <Image source={require('../images/arrows.png')} style={styles.imagearrow} />
+            <Image source={require('../images/GateSync.png')} style={styles.imageGS} />
         </LinearGradient>
     );
 };
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1, // Make sure the gradient covers the whole screen
-        justifyContent: 'center',
-    },
-    centered: {
         flex: 1,
         justifyContent: 'center',
-        alignItems: 'center',
-    },
-    text: {
-        fontSize: 24,
-        fontWeight: 'bold',
-        color: '#fff',  // White text color for contrast
     },
     image: {
         width: 211,
@@ -71,27 +64,26 @@ const styles = StyleSheet.create({
     },
     button: {
         backgroundColor: '#0E2C6E',
-        paddingVertical: 15, // Vertical padding for button
-        paddingHorizontal: 40, // Horizontal padding for button
-        borderRadius: 25, // Rounded corners
-        elevation: 3, // Shadow effect (on Android)
-        shadowColor: '#000', // Shadow color (iOS)
-        shadowOffset: { width: 0, height: 2 }, // Shadow offset
-        shadowOpacity: 0.2, // Shadow opacity (iOS)
-        shadowRadius: 5, // Shadow blur radius (iOS)
+        paddingVertical: 15,
+        paddingHorizontal: 40,
+        borderRadius: 25,
+        elevation: 3,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.2,
+        shadowRadius: 5,
         borderWidth: 1,
         borderColor: '#fff',
         width: 203,
         height: 55,
         top: 200,
         left: 95,
-
     },
     buttonText: {
         fontSize: 20,
         fontWeight: 'bold',
-        color: '#fff',  // Button text color
-        textAlign: 'center', // Center align the text inside the button
+        color: '#fff',
+        textAlign: 'center',
         fontFamily: 'Kanit-SemiBold',
     },
 });

@@ -1,3 +1,4 @@
+/* eslint-disable quotes */
 import React, { useState } from 'react';
 import {
   View,
@@ -11,46 +12,40 @@ import {
   Platform,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
-import { collection, query, where, getDocs } from 'firebase/firestore';
-import { db } from './firebase'; // Your Firestore configuration
+import { auth, db } from "./firebase"; // Ensure it's imported correctly
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { collection, query, where, getDocs } from "firebase/firestore";
 
 const StudentLogin = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
  
-const handleLogin = async () => {
-  if (!email || !password) {
-    Alert.alert('Error', 'Please fill in all fields');
-    return;
-  }
-
-  try {
-    // Firebase Auth login
-    const auth = getAuth();
-    await signInWithEmailAndPassword(auth, email, password);
-
-    // After successful authentication, check Firestore for the student data
-    const studentsRef = collection(db, "students");
-    const q = query(
-      studentsRef,
-      where("email", "==", email) // Match by email
-    );
-
-    const querySnapshot = await getDocs(q);
-
-    if (!querySnapshot.empty) {
-      // Successful login
-      navigation.navigate("StudentPage");
-    } else {
-      Alert.alert("Error", "Invalid email or password");
+  const handleLogin = async () => {
+    if (!email || !password) {
+      Alert.alert("Error", "Please fill in all fields");
+      return;
     }
-  } catch (error) {
-    console.error("Error logging in:", error.message);
-    Alert.alert("Error", "Something went wrong. Please try again.");
-  }
-};
+  
+    try {
+      // Ensure Firebase Auth is correctly referenced
+      await signInWithEmailAndPassword(auth, email, password);
+  
+      // Firestore query
+      const studentsRef = collection(db, "students");
+      const q = query(studentsRef, where("email", "==", email));
+      const querySnapshot = await getDocs(q);
+  
+      if (!querySnapshot.empty) {
+        navigation.navigate("StudentPage");
+      } else {
+        Alert.alert("Error", "Invalid email or password");
+      }
+    } catch (error) {
+      console.error("Error logging in:", error.message);
+      Alert.alert("Error", error.message);
+    }
+  };
 
 
   return (
