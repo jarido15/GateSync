@@ -1,25 +1,43 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, Image } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import { auth, db } from './firebase'; // Import Firebase instance
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { collection, addDoc } from 'firebase/firestore';
 
 const ParentSignup = ({ navigation }) => {
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [idNumber, setIdNumber] = useState('');
 
-    const handleSignup = () => {
+    const handleSignup = async () => {
         // Simple validation
-        if (!username || !email || !password || !idNumber) {
+        if (!username || !email || !password) {
             Alert.alert('Error', 'Please fill in all fields');
             return;
         }
 
-        // You can replace this with actual signup logic (e.g., API request)
-        Alert.alert('Success', `Welcome, ${username}!`);
+        try {
+            // Create user in Firebase Authentication
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
 
-        // Optionally navigate to the Login screen after successful signup
-        // navigation.navigate('StudentLogin');
+            // Add user data to Firestore under 'parent' collection
+            await addDoc(collection(db, 'parent'), {
+                username: username,
+                email: email,
+                uid: user.uid, // Store the Firebase user ID
+                createdAt: new Date().toISOString(),
+            });
+
+            Alert.alert('Success', `Welcome, ${username}!`);
+
+            // Optionally navigate to the Login screen after successful signup
+            navigation.navigate('ParentLogin');
+        } catch (error) {
+            Alert.alert('Signup Failed', error.message);
+            console.error('Error signing up:', error);
+        }
     };
 
     return (
@@ -33,11 +51,11 @@ const ParentSignup = ({ navigation }) => {
             <Text style={styles.heading}>Sign Up</Text>
 
             <Image
-                source={require('../images/facescanner.png')} 
+                source={require('../images/facescanner.png')}
                 style={styles.facescanner}
             />
             <Image
-                source={require('../images/arrows.png')} 
+                source={require('../images/arrows.png')}
                 style={styles.arrows1}
             />
             <TouchableOpacity onPress={() => navigation.navigate('ParentLogin')}>
@@ -64,15 +82,6 @@ const ParentSignup = ({ navigation }) => {
                     value={email}
                     onChangeText={setEmail}
                     keyboardType="email-address"
-                    placeholderTextColor={'#686D76'}
-                />
-
-                <Text style={styles.label}>Stundent ID</Text>
-                <TextInput
-                    style={styles.input}
-                    placeholder="Enter ID Number"
-                    value={idNumber}
-                    onChangeText={setIdNumber}
                     placeholderTextColor={'#686D76'}
                 />
 
@@ -148,7 +157,7 @@ const styles = StyleSheet.create({
     },
     inputContainer: {
         width: '100%',
-        height: 470,
+        height: 410,
         bottom: 680,
         backgroundColor: '#ffffff',
         borderRadius: 15,

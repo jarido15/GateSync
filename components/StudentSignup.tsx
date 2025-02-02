@@ -32,7 +32,7 @@ const StudentSignup = ({ navigation }) => {
             const qrDataString = `${username}-${idNumber}`; // Example: "JohnDoe-123456"
             setQrData(qrDataString);
     
-            // Step 3: Save user details and QR code data to Firestore (without 'uid')
+            // Step 3: Save user details and QR code data to Firestore (with 'uid')
             await addDoc(collection(db, 'students'), {
                 username,
                 email,
@@ -40,6 +40,7 @@ const StudentSignup = ({ navigation }) => {
                 yearLevel,
                 course,
                 qrData: qrDataString, // Save QR code data
+                uid: user.uid, // Store the signed-in user's UID
             });
     
             // Step 4: Show success modal
@@ -49,6 +50,7 @@ const StudentSignup = ({ navigation }) => {
             Alert.alert('Error', 'An error occurred while signing up. Please try again.');
         }
     };
+
     
 
     return (

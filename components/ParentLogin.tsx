@@ -11,28 +11,27 @@ import {
   Platform,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../components/firebase'; // Ensure this imports your Firebase config
 
-const StudentLogin = ({ navigation }) => {
+const ParentLogin = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const staticUser = {
-    email: 'parent@example.com',
-    password: 'password',
-  };
-
-  const handleLogin = () => {
+  const handleLogin = async () => {
     if (!email || !password) {
       Alert.alert('Error', 'Please fill in all fields');
       return;
     }
 
-    if (email === staticUser.email && password === staticUser.password) {
-      navigation.navigate('ParentPage');  // Navigate to ParentHomeScreen
-    } else {
-      Alert.alert('Error', 'Invalid credentials');
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      navigation.navigate('ParentPage'); // Navigate to Parent Dashboard
+    } catch (error) {
+      Alert.alert('Login Failed', error.message);
     }
   };
+
 
   return (
     <View style={styles.container}>
@@ -226,4 +225,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default StudentLogin;
+export default ParentLogin;
