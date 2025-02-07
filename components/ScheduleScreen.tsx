@@ -1,14 +1,39 @@
-import React, { useState } from 'react';
-import { View, TouchableOpacity, Text, StyleSheet, Platform, Image, Alert } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, TouchableOpacity, Text, StyleSheet, Image, Alert, FlatList } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import { auth } from './firebase';
+import { db } from './firebase';
+import { doc, getDoc, setDoc, serverTimestamp, collection, query, where, getDocs } from 'firebase/firestore';
 
 const ScheduleScreen = ({ navigation }) => {
-  const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]); // Format: YYYY-MM-DD
+  const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
   const [timeIn, setTimeIn] = useState(new Date());
   const [timeOut, setTimeOut] = useState(new Date());
   const [showTimeInPicker, setShowTimeInPicker] = useState(false);
   const [showTimeOutPicker, setShowTimeOutPicker] = useState(false);
+  const [userSchedules, setUserSchedules] = useState([]);
+
+  useEffect(() => {
+    const fetchSchedule = async () => {
+      try {
+        const user = auth.currentUser;
+        if (user) {
+          const userId = user.uid;
+
+          // Fetch all schedules for the user
+          const schedulesQuery = query(collection(db, 'schedules'), where('uid', '==', userId));
+          const querySnapshot = await getDocs(schedulesQuery);
+          const schedulesList = querySnapshot.docs.map(doc => doc.data());
+          setUserSchedules(schedulesList);
+        }
+      } catch (error) {
+        console.error('Error fetching schedule:', error);
+      }
+    };
+
+    fetchSchedule();
+  }, []);
 
   const onChangeTimeIn = (event, selectedTime) => {
     const currentTime = selectedTime || timeIn;
@@ -22,14 +47,42 @@ const ScheduleScreen = ({ navigation }) => {
     setTimeOut(currentTime);
   };
 
-  const handleSave = () => {
-    console.log('Selected Date:', selectedDate);
-    console.log('Time In:', timeIn.toLocaleTimeString());
-    console.log('Time Out:', timeOut.toLocaleTimeString());
-    Alert.alert('Saved', 'Your date and times have been saved (logged to console).');
+  const handleSave = async () => {
+    try {
+      const user = auth.currentUser;
+      if (user) {
+        const userId = user.uid;
+
+        const scheduleData = {
+          date: selectedDate,
+          timeIn: timeIn.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+          timeOut: timeOut.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+          timestamp: serverTimestamp(),
+          uid: userId,
+        };
+
+        const scheduleDocRef = doc(db, 'schedules', userId);
+        await setDoc(scheduleDocRef, scheduleData, { merge: true });
+
+        Alert.alert('Success', 'Schedule saved successfully.');
+      } else {
+        Alert.alert('Error', 'No user is logged in.');
+      }
+    } catch (error) {
+      console.error('Error saving schedule:', error);
+      Alert.alert('Error', 'Failed to save schedule.');
+    }
   };
 
-  return (
+  const renderItem = ({ item }) => (
+    <View style={styles.scheduleItem}>
+      <Text style={styles.scheduleText}>Date: {item.date}</Text>
+      <Text style={styles.scheduleText}>Time In: {item.timeIn}</Text>
+      <Text style={styles.scheduleText}>Time Out: {item.timeOut}</Text>
+    </View>
+  );
+
+  const renderHeader = () => (
     <View style={styles.container}>
       <View style={styles.navbar}>
         <TouchableOpacity onPress={() => navigation.navigate('StudentPage')}>
@@ -53,7 +106,7 @@ const ScheduleScreen = ({ navigation }) => {
         </TouchableOpacity>
       </View>
 
-      {/* Calendar Component */}
+      {/* Calendar Section */}
       <View style={styles.section}>
         <Text style={styles.label}>Select Date:</Text>
         <Calendar
@@ -67,7 +120,6 @@ const ScheduleScreen = ({ navigation }) => {
             arrowColor: '#007bff',
           }}
         />
-        {/* Selected Date Display */}
         <View style={styles.dateContainer}>
           <Text style={styles.dateLabel}>Selected Date:</Text>
           <Text style={styles.dateText}>{selectedDate}</Text>
@@ -113,11 +165,26 @@ const ScheduleScreen = ({ navigation }) => {
       </View>
     </View>
   );
+
+  return (
+    <View style={styles.scrollContainer}>
+      {renderHeader()}
+      <FlatList
+        data={userSchedules}
+        renderItem={renderItem}
+        keyExtractor={(item, index) => index.toString()}
+        ListFooterComponent={<View style={{ height: 100 }} />} // Optional: add some spacing at the bottom
+      />
+    </View>
+  );
 };
 
 const styles = StyleSheet.create({
-  container: {
+  scrollContainer: {
     flex: 1,
+    backgroundColor: '#f8f9fa',
+  },
+  container: {
     padding: 20,
     backgroundColor: '#f8f9fa',
   },
@@ -163,8 +230,8 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#007bff',
   },
-   navbar: {
-    width: '115%', // Ensures the navbar spans the full screen width
+  navbar: {
+    width: '115%',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -176,9 +243,9 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
     shadowRadius: 4,
-    position: 'absolute', // Fixes it to the top
-    top: 0, // Anchors the navbar at the top
-    zIndex: 10, // Ensures it stays above other components
+    position: 'absolute',
+    top: 0,
+    zIndex: 10,
   },
   navCenter: {
     flexDirection: 'row',
@@ -205,11 +272,22 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
     backgroundColor: '#007bff',
     borderRadius: 5,
-    left: '-2%',
   },
   saveButtonText: {
     color: '#fff',
     fontWeight: 'bold',
+  },
+  scheduleItem: {
+    padding: 10,
+    backgroundColor: '#f1f1f1',
+    borderRadius: 8,
+    marginBottom: 10,
+    borderWidth: 1,
+    borderColor: '#ddd',
+  },
+  scheduleText: {
+    fontSize: 14,
+    color: '#333',
   },
 });
 

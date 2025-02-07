@@ -31,6 +31,7 @@ import ParentChatPage from './components/ParentChatPage';
 import LinkChildren from './components/LinkChildren';
 import LinkedChildren from './components/LinkedChildren';
 import ScheduleScreen from './components/ScheduleScreen';
+import Myschedule from './components/Myschedule';
 
 // Create Stack and Tab Navigators
 const Stack = createStackNavigator();
@@ -201,6 +202,11 @@ const App = () => {
         <Stack.Screen
           name="QRCode"
           component={QRCode}
+          options={{ headerShown: false }}
+        />
+         <Stack.Screen
+          name="Myschedule"
+          component={Myschedule}
           options={{ headerShown: false }}
         />
         <Stack.Screen

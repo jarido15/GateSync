@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -10,23 +10,76 @@ import {
   TextInput,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import { auth, db } from './firebase';
+import { collection, query, where, getDocs, updateDoc } from 'firebase/firestore';
 
 const ProfileScreen = ({ navigation }) => {
   const [modalVisible, setModalVisible] = useState(false);
-  const [userName, setUserName] = useState('John Doe');
-  const [course, setCourse] = useState('Information Technology');
-  const [idNumber, setIdNumber] = useState('2021 - 2205');
-  const [yearLevel, setYearLevel] = useState('4');
-  const [email, setEmail] = useState('johndoe@example.com');
+  const [userName, setUserName] = useState('');
+  const [course, setCourse] = useState('');
+  const [idNumber, setIdNumber] = useState('');
+  const [yearLevel, setYearLevel] = useState('');
+  const [email, setEmail] = useState('');
 
-  const handleSaveChanges = () => {
-    // You can add any logic for saving changes here, like calling an API
-    Alert.alert('Changes Saved', 'Your profile has been updated.');
-    setModalVisible(false); // Close the modal after saving changes
+  useEffect(() => {
+    fetchUserData();
+  }, []);
+
+  const fetchUserData = async () => {
+    const user = auth.currentUser;
+    if (user) {
+      try {
+        const studentsRef = collection(db, 'students');
+        const q = query(studentsRef, where('email', '==', user.email));
+        const querySnapshot = await getDocs(q);
+
+        if (!querySnapshot.empty) {
+          const studentDoc = querySnapshot.docs[0]; // Get the first matching document
+          const userData = studentDoc.data();
+
+          setUserName(userData.username || '');
+          setCourse(userData.course || '');
+          setIdNumber(userData.idNumber || '');
+          setYearLevel(userData.yearLevel || '');
+          setEmail(userData.email || '');
+        } else {
+          Alert.alert('Error', 'User not found in students collection');
+        }
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+        Alert.alert('Error', 'Failed to fetch user data');
+      }
+    }
   };
 
-  const handleCancel = () => {
-    setModalVisible(false); // Close the modal without saving changes
+  const handleSaveChanges = async () => {
+    const user = auth.currentUser;
+    if (user) {
+      try {
+        const studentsRef = collection(db, 'students');
+        const q = query(studentsRef, where('email', '==', user.email));
+        const querySnapshot = await getDocs(q);
+
+        if (!querySnapshot.empty) {
+          const studentDocRef = querySnapshot.docs[0].ref; // Get the document reference
+          await updateDoc(studentDocRef, {
+            username: userName,
+            course: course,
+            idNumber: idNumber,
+            yearLevel: yearLevel,
+            email: email,
+          });
+
+          Alert.alert('Success', 'Profile updated successfully');
+          setModalVisible(false);
+        } else {
+          Alert.alert('Error', 'User not found in students collection');
+        }
+      } catch (error) {
+        console.error('Error updating profile:', error);
+        Alert.alert('Error', 'Failed to update profile');
+      }
+    }
   };
 
   return (
@@ -38,28 +91,26 @@ const ProfileScreen = ({ navigation }) => {
         </TouchableOpacity>
         <View style={styles.navCenter}>
           <Image source={require('../images/logo.png')} style={styles.logo} />
-          <Image
-            source={require('../images/GateSync.png')}
-            style={styles.gatesync}
-          />
+          <Image source={require('../images/GateSync.png')} style={styles.gatesync} />
         </View>
       </View>
 
       {/* Profile Details Container */}
-      <LinearGradient
-        colors={['#BCE5FF', '#FFFFFF']}
-        style={styles.profileContainer}
-      >
+      <LinearGradient colors={['#BCE5FF', '#FFFFFF']} style={styles.profileContainer}>
         <Image source={require('../images/account_circle.png')} style={styles.profileicon} />
-        <Text style={styles.usernamne}>{userName}</Text>
+        <Text style={styles.infolabel}>NAME:</Text>
+        <Text style={styles.username}>{userName}</Text>
+
+        <Text style={styles.infolabel}>COURSE:</Text>
         <Text style={styles.course}>{course}</Text>
 
         <Text style={styles.infolabel}>ID NUMBER:</Text>
-        <Text style={styles.infolabel}>YEAR LEVEL:</Text>
-        <Text style={styles.infolabel}>EMAIL:</Text>
-
         <Text style={styles.infoid}>{idNumber}</Text>
+
+        <Text style={styles.infolabel}>YEAR LEVEL:</Text>
         <Text style={styles.infolevel}>{yearLevel}</Text>
+
+        <Text style={styles.infolabel}>EMAIL:</Text>
         <Text style={styles.infomail}>{email}</Text>
 
         <TouchableOpacity style={styles.editButton} onPress={() => setModalVisible(true)}>
@@ -78,39 +129,13 @@ const ProfileScreen = ({ navigation }) => {
           <View style={styles.modalContent}>
             <Text style={styles.modalTitle}>Edit Profile</Text>
 
-            <TextInput
-              style={styles.input}
-              placeholder="User Name"
-              value={userName}
-              onChangeText={setUserName}
-            />
-            <TextInput
-              style={styles.input}
-              placeholder="Course"
-              value={course}
-              onChangeText={setCourse}
-            />
-            <TextInput
-              style={styles.input}
-              placeholder="ID Number"
-              value={idNumber}
-              onChangeText={setIdNumber}
-            />
-            <TextInput
-              style={styles.input}
-              placeholder="Year Level"
-              value={yearLevel}
-              onChangeText={setYearLevel}
-            />
-            <TextInput
-              style={styles.input}
-              placeholder="Email"
-              value={email}
-              onChangeText={setEmail}
-            />
+            <TextInput style={styles.input} placeholder="User Name" value={userName} onChangeText={setUserName} />
+            <TextInput style={styles.input} placeholder="Course" value={course} onChangeText={setCourse} />
+            <TextInput style={styles.input} placeholder="ID Number" value={idNumber} onChangeText={setIdNumber} />
+            <TextInput style={styles.input} placeholder="Year Level" value={yearLevel} onChangeText={setYearLevel} />
 
             <View style={styles.modalButtons}>
-              <TouchableOpacity style={styles.cancelButton} onPress={handleCancel}>
+              <TouchableOpacity style={styles.cancelButton} onPress={() => setModalVisible(false)}>
                 <Text style={styles.modalButtonText}>Cancel</Text>
               </TouchableOpacity>
               <TouchableOpacity style={styles.saveButton} onPress={handleSaveChanges}>
@@ -123,6 +148,7 @@ const ProfileScreen = ({ navigation }) => {
     </LinearGradient>
   );
 };
+
 
 const styles = StyleSheet.create({
   container: {
@@ -188,7 +214,8 @@ const styles = StyleSheet.create({
     color: 'black',
   },
   course: {
-    color: '#0056FF',
+    right: 25,
+    top: '-4.5%',
     fontSize: 16,
     alignSelf: 'center',
     fontWeight: '800',
@@ -200,26 +227,33 @@ const styles = StyleSheet.create({
     marginTop: 20,
     left: 20,
   },
+  username: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#000',
+    marginLeft: 140,
+    top: '-4.5%',
+  },
   infoid: {
     fontSize: 18,
     fontWeight: 'bold',
     color: '#000',
     marginLeft: 140,
-    top: '-25.2%',
+    top: '-4.5%',
   },
   infolevel: {
     fontSize: 18,
     fontWeight: 'bold',
     color: '#000',
     marginLeft: 140,
-    top: '-20.7%',
+    top: '-4.5%',
   },
   infomail: {
     fontSize: 18,
     fontWeight: 'bold',
     color: '#000',
     marginLeft: 140,
-    top: '-16%',
+    top: '-4.5%',
   },
   editButton: {
     backgroundColor: '#6B9BFA',
@@ -227,7 +261,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 20,
     alignSelf: 'center',
-    top: '-5%',
+    top: '1%',
   },
   editButtonText: {
     fontSize: 14,
@@ -245,7 +279,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 6,
     elevation: 5,
-    height: 450,
+    height: 540,
     width: '90%',
     alignSelf: 'center',
   },

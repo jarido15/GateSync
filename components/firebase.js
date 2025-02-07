@@ -1,3 +1,4 @@
+/* eslint-disable quotes */
 import { initializeApp, getApps, getApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import { initializeAuth, getAuth, getReactNativePersistence } from "firebase/auth";
